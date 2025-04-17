@@ -17,26 +17,8 @@ const createPackages = (selectedItems) => {
 
   // Check and filter valid items
   const validItems = selectedItems
-    .map((item) => {
-      if (!item || !item.id) {
-        console.warn('Invalid item: missing id', item);
-        return null;
-      }
-      const product = products.find((p) => p.id === item.id);
-      if (!product) {
-        console.warn(`Product with ID ${item.id} not found`);
-        return null;
-      }
-      if (product.price == null || product.weight == null || product.price < 0 || product.weight < 0) {
-        console.warn(`Invalid product data for ${product.name}: price=${product.price}, weight=${product.weight}`);
-        return null;
-      }
-      if (product.price > 250) {
-        throw new Error(`Product ${product.name} has price (${product.price}) exceeding $250`);
-      }
-      return product;
-    })
-    .filter((item) => item !== null);
+      .map(id => products.find(p => p.id === id.id))
+      .filter(item => item && item.price != null && item.weight != null);
 
   if (!validItems.length) {
     return [];
